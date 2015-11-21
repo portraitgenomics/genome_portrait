@@ -11,4 +11,7 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+<<<<<<< HEAD
 .Rproj.user
+=======
+>>>>>>> 67c6b168f9edd684e374b1d4be38b37cc6c2e1bd
