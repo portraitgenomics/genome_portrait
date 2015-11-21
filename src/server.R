@@ -1,13 +1,13 @@
 shinyServer(function(input, output) {
   dataInputDNA <- reactive({
-    inFile <- input$fileDNA
+    inFile <- input$fileDNAVcf
     if (is.null(inFile))
       return(NULL)
     data <- rvcf(inFile$datapath, input$annotation)
   })
   
   dataInputRNA <- reactive({
-    inFile <- input$fileRNA
+    inFile <- input$fileRNAVcf
     if (is.null(inFile))
       return(NULL)
     data <- rvcf(inFile$datapath, input$annotation)

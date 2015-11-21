@@ -1,13 +1,24 @@
 shinyUI(navbarPage("Genome Portrait",
   tabPanel('Load Data',
            sidebarPanel(
-             fileInput('fileDNA', 'Choose DNA VCF File',
+             fileInput('fileDNAVcf', 'Choose DNA VCF File',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
                        ),
+             fileInput('fileDNABam', 'Choose DNA BAM File',
+                       accept=c('text/csv', 'text/comma-separated-values,text/plain', '.bam')
+             ),
              hr(),
-             fileInput('fileRNA', 'Choose RNA VCF File',
+             fileInput('fileRNAVcf', 'Choose RNA VCF File',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
                        ),
+             fileInput('fileRNABam', 'Choose RNA BAM File',
+                       accept=c('text/csv', 'text/comma-separated-values,text/plain', '.bam')
+             ),
+             hr(),
+             fileInput('fileExpr', 'Choose Expression Data',
+                       accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
+             ),
+             hr(),
              checkboxGroupInput("annotation", 
                                 label = h3("Annotate VCF Files"), 
                                 choices = list("dbSNP" = 'dbsnp', 
@@ -16,9 +27,11 @@ shinyUI(navbarPage("Genome Portrait",
                                 selected = NULL),
              submitButton(text = "Annotate", icon = NULL, width = NULL)
            ),
-           mainPanel()
+           mainPanel(
+             h3('Loaded Data Stats')
+           )
            ),
-  tabPanel('DNA',
+  tabPanel('DNA - Variants',
            sidebarPanel(
            
            ),
@@ -37,7 +50,7 @@ shinyUI(navbarPage("Genome Portrait",
              )
            )
            ),
-  tabPanel('RNA',
+  tabPanel('RNA - Variants',
            sidebarPanel(
              
            ),
@@ -56,5 +69,6 @@ shinyUI(navbarPage("Genome Portrait",
              )
            )
            ),
+  tabPanel('RNA - Expression'),
   tabPanel('Report')
 ))
