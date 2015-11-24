@@ -18,6 +18,13 @@ shinyUI(navbarPage("Genome Portrait",
              fileInput('fileExpr', 'Choose Expression Data',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
              ),
+             selectInput('tumorType', 
+                         'Tumor Type', 
+                         selected=NULL, 
+                         c('',
+                           'BRCA', 
+                           'OV')
+                         ),
              hr(),
              checkboxGroupInput("annotation", 
                                 label = h3("Annotate VCF Files"), 
@@ -69,6 +76,8 @@ shinyUI(navbarPage("Genome Portrait",
              )
            )
            ),
-  tabPanel('RNA - Expression'),
+  tabPanel('RNA - Expression',
+           tableOutput('libSize')
+           ),
   tabPanel('Report')
 ))
