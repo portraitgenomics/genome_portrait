@@ -35,7 +35,11 @@ shinyUI(navbarPage("Genome Portrait",
              submitButton(text = "Annotate", icon = NULL, width = NULL)
            ),
            mainPanel(
-             h3('Loaded Data Stats')
+             h3('Loaded Data Stats'),
+             h4('* Number of Variants, DNA:'),
+              verbatimTextOutput('nVcfDNA'),
+             h4('* Expression Data, Library Size:'),
+              verbatimTextOutput('exprLibSize')
            )
            ),
   tabPanel('DNA - Variants',

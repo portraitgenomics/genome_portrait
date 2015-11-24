@@ -32,6 +32,17 @@ shinyServer(function(input, output) {
     data
   })
   
+  ## stats on the main tab
+  output$nVcfDNA <- renderPrint({
+    s <- dataInputDNA()
+    dim(s)[1]
+  })
+  
+  output$exprLibSize <- renderPrint({
+    s <- dataInputExpr()
+    sum(s[,1])/1000000
+  })
+  
   ###############################################################################
   ### dna variants tab
   ###############################################################################
