@@ -9,7 +9,7 @@ shinyServer(function(input, output) {
     inFile <- input$fileDNAVcf
     if (is.null(inFile))
       return(NULL)
-    data <- rvcf(inFile$datapath, input$annotation)
+    data <- rvcf(inFile$datapath, input$annotationDNA)
   })
 
   ## rna input
@@ -17,7 +17,7 @@ shinyServer(function(input, output) {
     inFile <- input$fileRNAVcf
     if (is.null(inFile))
       return(NULL)
-    data <- rvcf(inFile$datapath, input$annotation)
+    data <- rvcf(inFile$datapath, input$annotationRNA)
   })
  
   ## epxr data input
@@ -47,7 +47,13 @@ shinyServer(function(input, output) {
   ### dna variants tab
   ###############################################################################
   output$tableDNA <- DT::renderDataTable({
-    dataInputDNA()
+    dat <- dataInputDNA()
+    if(is.null(input$annotationDNA)) {
+      dat[,c('Variant', 'Gene'), drop=FALSE]
+    } else {
+      sel <- colnames(dat)[unlist(sapply(input$annotationDNA, function(i) grep(i, colnames(dat))))]
+      dat[,c('Variant','Gene',sel), drop=FALSE]
+    }
   },
   server=TRUE)
 
@@ -55,7 +61,12 @@ shinyServer(function(input, output) {
     s = input$tableDNA_rows_selected
     if (length(s)) {
       dat <- dataInputDNA()
-      dat[s, , drop=FALSE]
+      if(is.null(input$annotationDNA)) {
+        dat[s, c('Variant', 'Gene'), drop=FALSE]
+      } else {
+        sel <- colnames(dat)[unlist(sapply(input$annotationDNA, function(i) grep(i, colnames(dat))))]
+        dat[s, c('Variant','Gene',sel), drop=FALSE]
+      }
     }
   })  
   
@@ -83,15 +94,26 @@ shinyServer(function(input, output) {
   ### rna variants tab
   ###############################################################################
   output$tableRNA <- DT::renderDataTable({
-    dataInputRNA()
+    dat <- dataInputRNA()
+    if(is.null(input$annotationRNA)) {
+      dat[,c('Variant', 'Gene'), drop=FALSE]
+    } else {
+      sel <- colnames(dat)[unlist(sapply(input$annotationRNA, function(i) grep(i, colnames(dat))))]
+      dat[,c('Variant','Gene',sel), drop=FALSE]
+    }
   },
   server=TRUE)
   
   output$seltableRNA <- DT::renderDataTable({
     s = input$tableRNA_rows_selected
     if (length(s)) {
-      dat <- dataInputDNA()
-      dat[s, , drop=FALSE]
+      dat <- dataInputRNA()
+      if(is.null(input$annotationRNA)) {
+        dat[s, c('Variant', 'Gene'), drop=FALSE]
+      } else {
+        sel <- colnames(dat)[unlist(sapply(input$annotationRNA, function(i) grep(i, colnames(dat))))]
+        dat[s, c('Variant','Gene',sel), drop=FALSE]
+      }
     }
   })
   

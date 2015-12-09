@@ -25,14 +25,7 @@ shinyUI(navbarPage("Genome Portrait",
                            'BRCA', 
                            'OV')
                          ),
-             hr(),
-             checkboxGroupInput("annotation", 
-                                label = h3("Annotate VCF Files"), 
-                                choices = list("dbSNP" = 'dbsnp', 
-                                               "dbNSFP" = 'dbnsfp', 
-                                               "CADD" = 'cadd'),
-                                selected = NULL),
-             submitButton(text = "Annotate", icon = NULL, width = NULL)
+             hr()
            ),
            mainPanel(
              h3('Loaded Data Stats'),
@@ -44,7 +37,12 @@ shinyUI(navbarPage("Genome Portrait",
            ),
   tabPanel('DNA - Variants',
            sidebarPanel(
-           
+             checkboxGroupInput("annotationDNA", 
+                                label = h3("Annotate DNA Variants"), 
+                                choices = list("dbSNP" = 'dbsnp', 
+                                               "dbNSFP" = 'dbnsfp', 
+                                               "CADD" = 'cadd'),
+                                selected = NULL)
            ),
            mainPanel(
              tabsetPanel(
@@ -63,7 +61,12 @@ shinyUI(navbarPage("Genome Portrait",
            ),
   tabPanel('RNA - Variants',
            sidebarPanel(
-             
+             checkboxGroupInput("annotationRNA", 
+                                label = h3("Annotate DNA Variants"), 
+                                choices = list("dbSNP" = 'dbsnp', 
+                                               "dbNSFP" = 'dbnsfp', 
+                                               "CADD" = 'cadd'),
+                                selected = NULL)
            ),
            mainPanel(
              tabsetPanel(
