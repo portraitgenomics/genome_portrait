@@ -22,6 +22,7 @@ rvcf <- function(file, annotation) {
     annos[c("notfound", "X_id", "cadd._license", 'X_score')] <- NULL
     row.names(vcf) <- NULL
     annos <- as.data.frame(DataFrame(lapply(annos, function(i) sapply(i, .collapse))))
+    rownames(annos) <- 1:dim(annos)[1]
     return(annos)
   }
 }

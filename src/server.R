@@ -54,7 +54,8 @@ shinyServer(function(input, output) {
   output$seltableDNA <- DT::renderDataTable({
     s = input$tableDNA_rows_selected
     if (length(s)) {
-      dataInputDNA()
+      dat <- dataInputDNA()
+      dat[s, , drop=FALSE]
     }
   })  
   
@@ -74,6 +75,10 @@ shinyServer(function(input, output) {
       cat(s, sep = ', ')
     }
   })
+  
+  output$infoDNA = renderPrint({
+
+  })
   ###############################################################################
   ### rna variants tab
   ###############################################################################
@@ -85,7 +90,8 @@ shinyServer(function(input, output) {
   output$seltableRNA <- DT::renderDataTable({
     s = input$tableRNA_rows_selected
     if (length(s)) {
-      dataInputRNA()
+      dat <- dataInputDNA()
+      dat[s, , drop=FALSE]
     }
   })
   
