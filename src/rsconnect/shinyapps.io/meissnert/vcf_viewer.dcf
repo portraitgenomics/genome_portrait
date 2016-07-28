@@ -1,8 +1,9 @@
 name: vcf_viewer
 account: meissnert
 server: shinyapps.io
-bundleId: 308544
+appId: 68206
+bundleId: 327386
 url: https://meissnert.shinyapps.io/vcf_viewer
-when: 1447267454.64385
+when: 1449644094.88143
 asMultiple: FALSE
 asStatic: FALSE

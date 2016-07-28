@@ -4,9 +4,8 @@ shinyUI(navbarPage("Genome Portrait",
              fileInput('fileDNAVcf', 'Choose DNA VCF File',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
                        ),
-             fileInput('fileDNABam', 'Choose DNA BAM File',
-                       accept=c('text/csv', 'text/comma-separated-values,text/plain', '.bam')
-             ),
+             selectInput('fileDNATumorBam', 'Choose DNA Tumor BAM File', bam.filenames),
+             selectInput('fileDNAGermlineBam', 'Choose DNA Germline BAM File', bam.filenames),
              hr(),
              fileInput('fileRNAVcf', 'Choose RNA VCF File',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
@@ -37,12 +36,15 @@ shinyUI(navbarPage("Genome Portrait",
            ),
   tabPanel('DNA - Variants',
            sidebarPanel(
-             checkboxGroupInput("annotationDNA", 
-                                label = h3("Annotate DNA Variants"), 
-                                choices = list("dbSNP" = 'dbsnp', 
-                                               "dbNSFP" = 'dbnsfp', 
-                                               "CADD" = 'cadd'),
-                                selected = NULL)
+             h4('Variant Filters'),
+             sliderInput("dna.filter.exac", "ExAC:",
+                         min = 0, max = 1, value = c(0,0.05)),
+             hr(),
+             h4('View Alignment'),
+             numericInput('alg.start', 'Start:', NULL),
+             numericInput('alg.stop', 'Stop:', NULL),
+             textInput('alg.chr', 'Chromosome:', NULL),
+             actionButton("alg.plot", "View")
            ),
            mainPanel(
              tabsetPanel(
@@ -56,13 +58,17 @@ shinyUI(navbarPage("Genome Portrait",
                         hr(),
                         verbatimTextOutput('infoDNA')
                )
-             )
+             ),
+             h4('DNA Tumor Track'),
+             plotOutput('dna.alignment.tumor'),
+             h4('DNA Germline Track'),
+             plotOutput('dna.alignment.germline')
            )
            ),
   tabPanel('RNA - Variants',
            sidebarPanel(
              checkboxGroupInput("annotationRNA", 
-                                label = h3("Annotate DNA Variants"), 
+                                label = h3("Annotate RNA Variants"), 
                                 choices = list("dbSNP" = 'dbsnp', 
                                                "dbNSFP" = 'dbnsfp', 
                                                "CADD" = 'cadd'),
@@ -86,5 +92,73 @@ shinyUI(navbarPage("Genome Portrait",
   tabPanel('RNA - Expression',
            tableOutput('libSize')
            ),
-  tabPanel('Report')
-))
+  tabPanel('Report',
+           h4("Sample Information"),
+           fluidRow(
+             column(3,
+                    textInput('report.sample', 'Sample:', value='')
+                    ),
+             column(3,
+                    dateInput('report.date', 'Date of Collection:', value='', format = "mm/dd/yy")
+             )
+           ),
+           fluidRow(
+             column(3,
+                    textInput('report.specimen.id', 'Specimen ID:', value='')
+             ),
+             column(3,
+                    textInput('report.specimen.site', 'Specimen Site:', value='')
+             ),
+             column(3,
+                    textInput('report.specimen.type', 'Specimen Type:', value='')
+             )
+           ),
+           hr(),
+           h4("Patient Information"),
+           fluidRow(
+             column(3,
+                    textInput('report.name', 'Name:', value='')
+                    ),
+             column(3,
+                    textInput('report.surname', 'Surname:', value='')
+                    )
+           ),
+           fluidRow(
+             column(3,
+                    selectInput('report.sex', 'Sex:', c('', 'Male', 'Female'), selected = NULL)
+                    )
+           ),
+           fluidRow(
+             column(3,
+                    textInput('report.tumor.type', 'Tumor Type:', value = '')
+             )
+           ),
+           hr(),
+           h4("Medical Facility"),
+           fluidRow(
+             column(3,
+                    textInput('report.med.name', 'Physician Name:', value='')
+             ),
+             column(3,
+                    textInput('report.med.surname', 'Physician Surname:', value='')
+             )
+           ),
+           fluidRow(
+             column(3,
+                    textInput('report.path.name', 'Pathologist Name:', value='')
+             ),
+             column(3,
+                    textInput('report.path.surname', 'Pathologist Surname:', value='')
+             )
+           ),
+           fluidRow(
+             column(3,
+                    textInput('report.med.facility', 'Medical Facility:', value='')
+             )
+           ),
+           hr(),
+           h4("Generate Report"),
+           downloadButton('report')
+           )
+)
+)

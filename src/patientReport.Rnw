@@ -1,0 +1,189 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Patient Report
+%
+% Original author:
+% Tobias Meissner
+%
+% License:
+% MIT
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%  Data Input
+%----------------------------------------------------------------------------------------
+
+<<r init, echo=FALSE>>=
+library(knitr)
+library(xtable)
+
+
+sanitizeLatexS <- function(str) {
+    gsub('([#$%&~_\\^\\\\{}])', '\\\\\\\\\\1', str, perl = TRUE);
+}
+@
+
+<<dataIn, echo=FALSE>>=
+
+@
+
+% ---------------------------------------------------------------------------------------
+% Sample Information
+% ---------------------------------------------------------------------------------------
+
+<<sampleinfo, echo=FALSE>>=
+
+@
+
+%----------------------------------------------------------------------------------------
+%  DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[11pt, stdletter, dateno]{newlfm}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wallpaper}
+\usepackage{array}
+\usepackage{arydshln}
+
+%% styling
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}} % centered with column 
+\newlfmP{noheadline,noHeadline}
+%\leftmarginsize{0in}
+%\rightmarginsize{0in}
+%\topmarginsize{2mm}
+%\topmarginskip{0in}
+%\headermarginsize{0cm}
+%\headermarginskip{0in}
+
+%% header
+\unprtop{0.65cm}
+\Rheader{\parbox{\textwith}{\small{\begin{tabbing} \textbf{Patient Name} \hspace*{1.25cm} \= \textbf{Report Date} \hspace*{0.75cm} \= \textbf{Tumor Type} \\ \Sexpr{sample$patient$name}, \Sexpr{sample$patient$surname} \> \today \> \Sexpr{sample$patient$tumor_type} \end{tabbing}}}}
+%% footer
+\unprbottom{1.4cm}
+\Lfooter{\scriptsize{Electronically Signed by \Sexpr{sample$medical_director$surname} \Sexpr{sample$medical_director$name} \Sexpr{sample$medical_director$title} | CLIA Number: \Sexpr{sample$lab$clia_number} | \today \\ \Sexpr{sample$lab$name}, \Sexpr{sample$lab$street}, \Sexpr{sample$lab$city}, \Sexpr{sample$lab$state}, \Sexpr{sample$lab$zip}  \hfill page \thepage}} 
+\lfooter{\scriptsize{Electronically Signed by \Sexpr{sample$medical_director$surname} \Sexpr{sample$medical_director$name} \Sexpr{sample$medical_director$title} | CLIA Number: \Sexpr{sample$lab$clia_number} | \today \\ \Sexpr{sample$lab$name}, \Sexpr{sample$lab$street}, \Sexpr{sample$lab$city}, \Sexpr{sample$lab$state}, \Sexpr{sample$lab$zip}  \hfill page \thepage}} 
+
+%% add section support 
+\newcounter{section}
+\newcounter{subsection}[section]
+\newcounter{subsubsection}[section]
+\setcounter{secnumdepth}{4}
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\normalfont\normalsize\bfseries}}
+\newcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\newcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {-3ex\@plus -1ex \@minus -.2ex}%
+                                     {0.7ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}                                     
+\renewcommand\thesection{\@arabic\c@section}
+\renewcommand\thesubsection{\thesection.\@arabic\c@subsection}
+\renewcommand\thesubsubsection{\thesubsubsection.\@arabic\c@subsubsection}
+\makeatother
+
+%----------------------------------------------------------------------------------------
+%  ADDRESSEE SECTION
+%----------------------------------------------------------------------------------------
+%\nameto{\Sexpr{sample$physician_addr$surname} \Sexpr{sample$physician_addr$name}} 
+%\addrto{\parbox{3in}{\Sexpr{sample$physician_addr$street} \\ \Sexpr{sample$physician_addr$city}, \Sexpr{sample$physician_addr$state}, \Sexpr{sample$physician_addr$zip}}}
+                   
+%----------------------------------------------------------------------------------------
+%  YOUR NAME & ADDRESS SECTION
+%----------------------------------------------------------------------------------------                     
+%% addres send from
+%\namefrom{Sherlock Holmes} 
+%\addrfrom{\parbox{2in}{221B Baker Street \\ London, UK}}
+
+%\greetto{}
+
+%----------------------------------------------------------------------------------------
+%  Start Document
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+\begin{newlfm}
+
+%\ThisCenterWallPaper{1}{avera_letter.pdf}
+\CenterWallPaper{1}{../pdf/avera_letter.pdf}
+
+%----------------------------------------------------------------------------------------
+%	Content
+%----------------------------------------------------------------------------------------
+
+\vspace*{-4.25cm}
+\textbf{Report for Sample \Sexpr{sanitizeLatexS(sample$patID)}}
+
+\vspace*{-0.5cm}
+\line(1,0){475} 
+
+%% SAMPLE INFORMATION
+
+\vspace{-0.3cm}
+\begin{scriptsize}
+\begin{tabbing}
+\textbf{Date of birth:} \= \Sexpr{sample$patient$date_of_birth} \hspace{0.7cm}  \= \textbf{Medical Facility:} \hspace{0.4cm} \= \Sexpr{sample$physician$facility} \hspace{0.4cm} \= \textbf{Specimen Received:} \= \Sexpr{sample$sample_details$received} \\ 
+\textbf{Sex:} \>\Sexpr{sample$patient$sex} \> \textbf{Ordering Physician:} \> \Sexpr{sample$physician$name}, \Sexpr{sample$physician$surname} \> \textbf{Specimen Site:} \> \Sexpr{sample$patient$tumor_site} \\
+\textbf{Specimen ID:} \>\Sexpr{sample$patient$specimen_id} \> \textbf{Medical Facility ID:} \> \Sexpr{sample$physician$facility_id} \> \textbf{Date of Collection:} \> \Sexpr{sample$sample_details$biopsy_date} \\
+\> \> \textbf{Pathologist:} \> \Sexpr{sample$pathologist$name}, \Sexpr{sample$pathologist$surname} \> \textbf{Specimen Type:} \> \Sexpr{sample$patient$specimen_type}
+\end{tabbing}
+\end{scriptsize}
+\vspace{-0.6cm}
+\line(1,0){475}
+
+%% Foundation Medicine
+
+\section*{Somatic Variant Results}
+
+<<format,echo=FALSE>>=
+tt <- data.frame(GenePos=paste(tab$Gene, tab$Variant, sep=' '),
+                 CONSEQ=paste(tab$Transcript, tab$PChange, sep=' '),
+                 ZYGOSITY=tab$Genotype,
+                 FREQ=tab$FREQ,
+                 INTERP=NA,
+                 stringsAsFactors = F
+                 )
+tt$GenePos <- gsub('>', '\\\\textgreater ', tt$GenePos)
+tt$CONSEQ <- gsub('_', '\\\\_', tt$CONSEQ)
+
+@
+
+%\subsection*{SNVs}
+
+<<fmSNV, echo=FALSE, results='asis'>>=
+  Rtab <- xtable(tt, align=c("l","p{4cm}","p{4cm}","p{2cm}","p{1.25cm}","p{3.25cm}"))
+
+  addtorow <- list(pos = list(2:nrow(tt)-1), command = "\\hdashline \n")
+
+  print(Rtab, 
+        include.rownames=FALSE,
+        type='latex', 
+        table.placement="h!", 
+        sanitize.text.function = function(x) x,
+        caption.placement='bottom',
+        add.to.row = addtorow
+        )
+@
+
+
+%\section*{Session Info}
+%
+%<<sessioninfo, echo=FALSE>>=
+%sessionInfo()
+%@
+
+%----------------------------------------------------------------------------------------
+
+\end{newlfm}
+
+\end{document}
