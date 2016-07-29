@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
+
 output$tableRNA <- DT::renderDataTable({
   dat <- dataInputRNA()
   if(is.null(input$annotationRNA)) {

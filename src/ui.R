@@ -1,5 +1,8 @@
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
+
 shinyUI(navbarPage("Genome Portrait",
-  tabPanel('Load Data',
+  tabPanel('Data',
            sidebarPanel(
              fileInput('fileDNAVcf', 'Choose DNA VCF File',
                        accept=c('text/csv', 'text/comma-separated-values,text/plain', '.vcf')
@@ -37,8 +40,13 @@ shinyUI(navbarPage("Genome Portrait",
   tabPanel('DNA - Variants',
            sidebarPanel(
              h4('Variant Filters'),
-             sliderInput("dna.filter.exac", "ExAC:",
+             checkboxInput('dna.filter.exac.check', 'ExAc'),
+             sliderInput("dna.filter.exac", NULL,
                          min = 0, max = 1, value = c(0,0.05)),
+             checkboxInput('dna.filter.conseq.check', 'Consequence'),
+             checkboxInput('dna.filter.cadd.check', 'CADD'),
+             sliderInput("dna.filter.cadd", NULL,
+                         min = 0, max = 50, value = c(0,50)),
              hr(),
              h4('View Alignment'),
              numericInput('alg.start', 'Start:', NULL),
@@ -159,6 +167,16 @@ shinyUI(navbarPage("Genome Portrait",
            hr(),
            h4("Generate Report"),
            downloadButton('report')
-           )
+           ),
+  navbarMenu('Menu',
+             tabPanel('Save Session',
+                      textInput('session.save.name', 'Save As:'),
+                      actionButton('session.save', 'Save')
+                      ),
+             tabPanel('Load Session',
+                      selectInput('session.load.name', NULL, choices = saves),
+                      actionButton('session.load', 'Load')
+                      )
+  )
 )
 )

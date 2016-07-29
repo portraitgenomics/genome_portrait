@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
+
 ## dna input
 dataInputDNA <- reactive({
   inFile <- input$fileDNAVcf

@@ -1,11 +1,5 @@
-########################################
-# Original author:
-# Tobias Meissner
-#
-# License:
-# MIT
-#
-########################################
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
 
 # rando string fucntion
 # code from https://ryouready.wordpress.com/2008/12/18/generate-random-string-name/

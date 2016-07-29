@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
+
 .collapse <- function (...) {
   paste(unlist(list(...)), sep = ",", collapse = ",")
 }
@@ -30,22 +33,24 @@ rvcf <- function(file, annotation) {
   rownames(annos) <- 1:dim(annos)[1]
   
   # pick the first field
-  annos$cadd.consequence <- unlist(lapply(annos$cadd.consequence, function(x) strsplit(x, ',')[[1]][1]))
-  annos$snpeff.ann <- unlist(lapply(annos$snpeff.ann, function(x) strsplit(x, ',')[[1]][1]))
-  annos$exac.af <- unlist(lapply(annos$exac.af, function(x) strsplit(x, ',')[[1]][1]))
-  annos$Gene <- unlist(lapply(annos$Gene, function(x) strsplit(x, ',')[[1]][1]))
-  annos$Amino.Acid.Position <- unlist(lapply(annos$Amino.Acid.Position, function(x) strsplit(x, ',')[[1]][1]))
+  annos$cadd.consequence2 <- unlist(lapply(annos$cadd.consequence, function(x) strsplit(x, ',')[[1]][1]))
+  annos$snpeff.ann2 <- unlist(lapply(annos$snpeff.ann, function(x) strsplit(x, ',')[[1]][1]))
+  annos$exac.af2 <- unlist(lapply(annos$exac.af, function(x) strsplit(x, ',')[[1]][1]))
+  annos$Gene2 <- unlist(lapply(annos$Gene, function(x) strsplit(x, ',')[[1]][1]))
+  annos$Amino.Acid.Position2 <- unlist(lapply(annos$Amino.Acid.Position, function(x) strsplit(x, ',')[[1]][1]))
   
   ann <- data.frame(
-    Gene=annos$Gene,
+    Gene=annos$Gene2,
     Variant=annos$Variant,
-    Transcript=annos$snpeff.ann,
-    Consequence=annos$cadd.consequence,
-    PChange=paste('p.',annos$cadd.naa,annos$Amino.Acid.Position,annos$cadd.oaa, sep=''),
+    Transcript=annos$snpeff.ann2,
+    Consequence=annos$cadd.consequence2,
+    PChange=paste('p.',annos$cadd.naa,annos$Amino.Acid.Position2,annos$cadd.oaa, sep=''),
     Genotype=ifelse(as.vector(geno(vcf)$GT[,'TUMOR'])=='0/0', 'homozygous ref.', ifelse(as.vector(geno(vcf)$GT[,'TUMOR'])=='0/1','heterozygous', 'homozygous')),
     FREQ=round(as.numeric(geno(vcf)$AD[,'TUMOR'])/as.numeric(geno(vcf)$DP[,'TUMOR']),2),
-    Cadd=annos$cadd.phred,
-    ExAc=annos$exac.af,
+    AD=as.numeric(geno(vcf)$AD[,'TUMOR']),
+    DP=as.numeric(geno(vcf)$DP[,'TUMOR']),
+    Cadd=as.numeric(as.vector(annos$cadd.phred)),
+    ExAc=as.numeric(as.vector(annos$exac.af2)),
     stringsAsFactors = F
   )
   

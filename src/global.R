@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Tobias Meissner
+# Licensed under the MIT License (MIT)
+
 library(shiny)
 library(myvariant)
 library(magrittr)
@@ -20,3 +23,5 @@ options(shiny.maxRequestSize = 10*1024^2) # 10mb file size limit
 
 bam.path="~/AWS/storage/patients/alignments/"
 bam.filenames<-list.files(path=bam.path, pattern = "*.bam$", recursive = T)
+
+saves <- list.files(pattern = '*.Rdata')
